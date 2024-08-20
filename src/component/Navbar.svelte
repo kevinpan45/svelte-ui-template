@@ -1,7 +1,7 @@
 <script>
   import UserIcon from "$component/UserMenu.svelte";
   export let showSearch = true;
-  export let username = "KP45";
+  export let username = "";
 
   export let scrollY;
   $: switchNavbarStyle = scrollY > 40 ? true : false;

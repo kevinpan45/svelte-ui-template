@@ -34,7 +34,7 @@
       class={`font-title inline-flex text-lg md:text-2xl ${collapsed ? "!hidden" : ""}`}
       style={`background-image: ${logo}`}
     >
-      Pipeline Cloud
+      Sample Site
     </div>
     <div
       tabindex="0"
