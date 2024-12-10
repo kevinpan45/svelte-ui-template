@@ -1,4 +1,4 @@
 <script>
 </script>
 
-<div>WTF</div>
+<div>Home Page</div>
