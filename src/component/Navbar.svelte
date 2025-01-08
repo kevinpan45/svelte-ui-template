@@ -7,6 +7,8 @@
   $: switchNavbarStyle = scrollY > 40 ? true : false;
 
   export let data;
+  export let login = () => {};
+  export let logout = () => {};
   export let addScrollPaddingToNavbar;
   export let removeScrollPaddingFromNavbar;
 </script>
@@ -35,8 +37,14 @@
         </div>
       {/if}
     </div>
-    <div class="flex-0">
-      <UserIcon bind:username />
-    </div>
+    {#if username}
+      <div class="flex-0">
+        <UserIcon bind:username {logout} />
+      </div>
+    {:else}
+      <div class="flex-0">
+        <button class="btn btn-ghost" on:click={login}>Login</button>
+      </div>
+    {/if}
   </nav>
 </div>

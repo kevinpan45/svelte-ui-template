@@ -6,7 +6,7 @@
   import { Toaster } from "svelte-french-toast";
   import "../app.css";
 
-  let username = "KP45";
+  let username;
 
   let layoutMounted = false;
 
@@ -18,6 +18,10 @@
   };
 
   $: collapsed = innerWidth < sideBarCollapsedWidth;
+
+  function login() {}
+
+  function logout() {}
 
   onMount(async () => {
     layoutMounted = true;
@@ -73,7 +77,7 @@
   <div class="bg-base-100 drawer lg:drawer-open h-full overflow-hidden">
     <div class={`${collapsed ? "ml-20" : ""} drawer-content overflow-auto`}>
       {#if layoutMounted}
-        <Navbar {collapsed} {username} showSearch={false} />
+        <Navbar {collapsed} {username} {login} {logout} showSearch={false} />
       {/if}
 
       <div class={"max-w-[100vw] px-6 pb-16 xl:pr-2"}>
