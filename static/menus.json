@@ -1,0 +1,16 @@
+[
+    {
+        "name": "profile",
+        "link": "/profile",
+        "alias": "Profile",
+        "icon": "profile",
+        "enabled": true
+    },
+    {
+        "name": "setting",
+        "link": "/setting",
+        "alias": "Settings",
+        "icon": "setting",
+        "enabled": true
+    }
+]

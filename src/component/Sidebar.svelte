@@ -1,6 +1,7 @@
 <script>
   import SidebarMenuItem from "$component/SidebarMenuItem.svelte";
   import logo from "$lib/images/svelte-logo.svg";
+  import { onMount } from "svelte";
 
   let serverVersion = "0.0.1";
   let contextMenuEl;
@@ -8,12 +9,20 @@
   export let closeDrawer;
   // export let openDrawer;
 
-  export let pages;
+  let pages = [];
   export let drawerSidebarScrollY;
   export let collapsed;
   $: switchNavbarStyle = drawerSidebarScrollY > 40 ? true : false;
 
   $: innerWidth = undefined;
+
+  onMount(() => {
+    fetch("/menus.json")
+      .then((res) => res.json())
+      .then((data) => {
+        pages = data;
+      });
+  });
 </script>
 
 <svelte:window bind:innerWidth />
