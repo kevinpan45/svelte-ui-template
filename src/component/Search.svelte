@@ -48,12 +48,10 @@
     return items;
   }
   let searchIndex = extractPages(data);
-  console.log("searchIndex - ", searchIndex);
 
   let os;
   onMount(() => {
     os = getOS();
-    console.log("os - ", os);
   });
 
   let seachboxEl;

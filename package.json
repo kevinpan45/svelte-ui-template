@@ -3,25 +3,28 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
-        "build": "vite build",
-        "preview": "vite preview --host 0.0.0.0 --port 5173"
+		"build": "vite build",
+		"preview": "vite preview"
 	},
 	"devDependencies": {
 		"@iconify/svelte": "4.0.2",
-        "@sveltejs/adapter-static": "^2.0.1",
-        "@sveltejs/kit": "^1.20.4",
-        "autoprefixer": "10.4.17",
-        "daisyui": "^4.7.3",
-        "postcss": "8.4.35",
-        "svelte": "^4.0.0",
-        "svelte-time": "^0.8.2",
-        "svelte-typeahead": "4.4.1",
-        "tailwindcss": "3.4.1",
-        "vite": "4.3.2"
+		"@sveltejs/adapter-static": "^3.0.8",
+		"@sveltejs/adapter-vercel": "^5.5.2",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"autoprefixer": "10.4.17",
+		"daisyui": "^4.7.3",
+		"postcss": "8.4.35",
+		"svelte": "^4.0.0",
+		"svelte-time": "^0.8.2",
+		"svelte-typeahead": "4.4.1",
+		"tailwindcss": "3.4.1",
+		"vite": "^5.0.0"
 	},
 	"type": "module",
 	"dependencies": {
-		"axios": "1.10.0",
+		"@auth0/auth0-spa-js": "^2.2.0",
+		"axios": "1.9.0",
 		"svelte-french-toast": "1.2.0"
 	}
 }

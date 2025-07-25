@@ -1,31 +1,59 @@
 <script>
+  import { page } from "$app/stores";
   import Icon from "$component/icon/Icon.svelte";
   import Navbar from "$component/Navbar.svelte";
   import Sidebar from "$component/Sidebar.svelte";
+  import axios from "axios";
   import { onMount } from "svelte";
   import { Toaster } from "svelte-french-toast";
   import "../app.css";
 
+  import { checkAuth, createClient, getIdToken, handleRedirectCallback, isAuthenticated, loginWithRedirect, logout, user } from '$lib/auth.js';
   let username;
-
   let layoutMounted = false;
+  let collapsed = false;
 
-  const sideBarCollapsedWidth = 1024;
+  axios.defaults.baseURL = import.meta.env.VITE_API_SERVER;
 
-  let lockSiderbar = {
-    isLocked: false,
-    isCollapsed: false,
-  };
+  axios.interceptors.request.use(
+    async function (config) {
+      if(user) {
+        const accessToken = await getIdToken();
+        if(accessToken) {
+          config.headers["Authorization"] = "Bearer " + accessToken;
+        }
+      }
+      return config;
+    },
+    function (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
+  );
 
-  $: collapsed = innerWidth < sideBarCollapsedWidth;
+  async function login() {
+    await loginWithRedirect();
+  }
 
-  function login() {}
-
-  function logout() {}
+  async function handleLogout() {
+    await logout();
+  }
 
   onMount(async () => {
+    await createClient();
+    // Handle Auth0 redirect callback if code and state are in URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('code') && params.has('state')) {
+      await handleRedirectCallback();
+      // Remove code and state from URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    await checkAuth();
     layoutMounted = true;
     collapsed = sessionStorage.getItem("sidebar-collapsed") === "true";
+    if (user) {
+      username = user.name || user.email;
+    }
   });
 
   $: innerWidth = undefined;
@@ -33,38 +61,19 @@
   const onClickSideBarCollapse = () => {
     sessionStorage.setItem("sidebar-collapsed", !collapsed);
     collapsed = !collapsed;
-    lockSiderbar = {
-      isLocked: true,
-      isCollapsed: collapsed,
-    };
   };
 
+  // Load protected routes from environment variable
+  const protectedRoutes =
+    import.meta.env.VITE_PROTECTED_ROUTES?.split(",") || [];
+
   $: {
-    const { isLocked, isCollapsed } = lockSiderbar;
-    if (isLocked) {
-      // case: 窗口size足够大，手动收起菜单
-      if (isCollapsed) {
-        if (innerWidth < sideBarCollapsedWidth) {
-          lockSiderbar = {
-            isLocked: false,
-            isCollapsed,
-          };
-        } else {
-          collapsed = true;
-        }
-      }
-      // case: 窗口size小于sideBarCollapsedWidth，手动展开菜单
-      else {
-        if (innerWidth >= sideBarCollapsedWidth) {
-          lockSiderbar = {
-            isLocked: false,
-            isCollapsed,
-          };
-        } else {
-          collapsed = false;
-        }
-      }
-    } else {
+    if (
+      typeof window !== "undefined" &&
+      protectedRoutes.includes($page.url.pathname) &&
+      !isAuthenticated
+    ) {
+      window.location.href = "/login";
     }
   }
 </script>
@@ -77,7 +86,7 @@
   <div class="bg-base-100 drawer lg:drawer-open h-full overflow-hidden">
     <div class={`${collapsed ? "ml-20" : ""} drawer-content overflow-auto`}>
       {#if layoutMounted}
-        <Navbar {collapsed} {username} {login} {logout} showSearch={false} />
+        <Navbar {collapsed} {username} {login} {handleLogout} showSearch={false} />
       {/if}
 
       <div class={"max-w-[100vw] px-6 pb-16 xl:pr-2"}>

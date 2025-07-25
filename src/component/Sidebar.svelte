@@ -1,7 +1,7 @@
 <script>
   import SidebarMenuItem from "$component/SidebarMenuItem.svelte";
   import logo from "$lib/images/svelte-logo.svg";
-  import { onMount } from "svelte";
+  import { getMenus } from "$lib/menu";
 
   let serverVersion = "0.0.1";
   let contextMenuEl;
@@ -9,20 +9,12 @@
   export let closeDrawer;
   // export let openDrawer;
 
-  let pages = [];
+  let menus = getMenus();
   export let drawerSidebarScrollY;
   export let collapsed;
   $: switchNavbarStyle = drawerSidebarScrollY > 40 ? true : false;
 
   $: innerWidth = undefined;
-
-  onMount(() => {
-    fetch("/menus.json")
-      .then((res) => res.json())
-      .then((data) => {
-        pages = data;
-      });
-  });
 </script>
 
 <svelte:window bind:innerWidth />
@@ -43,14 +35,15 @@
       class={`font-title inline-flex text-lg md:text-2xl ${collapsed ? "!hidden" : ""}`}
       style={`background-image: ${logo}`}
     >
-      Sample Site
+      BIDS Bridge
     </div>
     <div
       tabindex="0"
       role="button"
       class={`link link-hover inline-block font-mono text-xs ${collapsed ? "!hidden" : ""}`}
     >
-      {serverVersion}
+    <!-- UI Version on Bar -->
+      <!-- {serverVersion} -->
     </div>
   </a>
 </div>
@@ -58,7 +51,7 @@
 <div class="h-4" />
 
 <ul class="menu px-4 py-0">
-  {#each pages as { name, href, icon, badge, badgeclass, highlightAnotherItem, deprecated, items, target, highlight, link, enabled, alias }}
+  {#each menus as { name, href, icon, badge, badgeclass, highlightAnotherItem, deprecated, items, target, highlight, link, enabled, alias }}
     {#if enabled}
       <SidebarMenuItem
         {closeDrawer}

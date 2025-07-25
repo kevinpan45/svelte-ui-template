@@ -1,29 +1,43 @@
-# create-svelte
+# Svelte Web UI Template
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+This is a template for building web applications using Svelte. It includes a basic setup with authentication, a responsive navbar, and a sidebar.
 
-## Creating a project
+## Fork or Copy this Project
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+You can fork this repository or copy the code to start your own Svelte project. Make sure to install the necessary dependencies before running the application.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- Install dependencies:
+
+```bash
+npm i
+```
+
+- Create `.env` file to setup auth0 and API server variables:
+
+```env
+VITE_API_SERVER=<your API server base URL>
+VITE_AUTH0_DOMAIN=<your Auth0 domain>
+VITE_AUTH0_CLIENT_ID=<your Auth0 client ID>
+```
+
+- Start a development server:
 
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
+
+### Add Page
+
+To add a new page to your Svelte application:
+
+- Create a new folder in `src/routes/` with the name of your new page.
+- Inside that folder, create a `+page.svelte` file.
+- Add your Svelte component code in the `+page.svelte` file.
+- Add a new menu in the menu settings file `src/lib/menu.js`, add menu icon file into folder `src/lib/svgs/`
+
+***profile page is a good example***
 
 ## Building
 
@@ -35,4 +49,49 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+### Build Static Dist
+Controls the build type for the SvelteKit application. Set to `static` to build a static site with pre-rendered pages.
+
+**Usage:**
+```bash
+export SVELTEKIT_BUILD_TYPE=static 
+npm run build
+```
+
+## Deploying
+
+This project supports deployment to vercel as default, you can also build a static dist to deploy to nginx or other static file servers.
+
+## Dockerize the application
+
+- Build Static files
+
+```bash
+npm run build
+```
+
+- Build Docker image
+
+```bash
+docker build -t svelte-ui-template:latest .
+```
+
+- Run Docker container
+
+***Change port number if needed***
+
+```bash
+docker run -d -p 80:80 svelte-ui-template
+```
+
+### GitHub Action
+
+GitHub action `docker-publish.yml` will build and push the Docker image to GitHub Container Registry (ghcr.io) when you push changes to the main branch or create a new tag, you can also manually trigger a workflow run.
+
+## Open Source
+
+- Frame: [Svelte](https://svelte.dev/)
+- UI: [DaisyUI](https://daisyui.com/)
+- Auth: [Auth0](https://auth0.com/)
+- Toast: [Svelte French Toast](https://svelte-french-toast.com/)
+- ICON: [heroicons](https://heroicons.com/outline)
