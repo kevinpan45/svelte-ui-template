@@ -1,7 +1,9 @@
-let menus = [
-    { name: "profile", link: "/profile", alias: "Profile", icon: "profile", enabled: true },
-];
+let menus = null;
 
-export function getMenus() {
+export async function getMenus() {
+    if (menus === null) {
+        const response = await fetch('/data/menus.json');
+        menus = await response.json();
+    }
     return menus;
 }
