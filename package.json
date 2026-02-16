@@ -24,7 +24,7 @@
 	"type": "module",
 	"dependencies": {
 		"@auth0/auth0-spa-js": "^2.2.0",
-		"axios": "1.13.2",
+		"axios": "1.13.5",
 		"svelte-french-toast": "1.2.0"
 	}
 }
